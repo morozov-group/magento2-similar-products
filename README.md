@@ -6,4 +6,8 @@ Simple installation via composer.
 ```
 compose install morozov-group/magento2-similar-products
 ```
-Go to configuration and setup your service URL.
+Go to configuration enter your email, and we'll take care of everything else.
+
+You will receive email once we are ready to serve similar products recommendations.
+
+Then you can proceed with customizations.
