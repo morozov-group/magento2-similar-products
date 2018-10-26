@@ -18,6 +18,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     const PRODUCTS_FILE = 'products.csv';
 
     /**
+     * Uses external CSV file with Products to process
+     */
+    const LOCAL_MODE    = 0;
+
+    /**
      * @var \Magento\Framework\Logger\Monolog
      */
     protected $logger;
@@ -128,6 +133,10 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function getProductsFileUrl()
     {
+        if (self::LOCAL_MODE) {
+            return 'https://www.bragardusa.net/media/morozov_similarity/products-m23.csv';
+        }
+
         $mediaUrl = $this->storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
         $url = $mediaUrl . self::EXPORT_DIR . '/' . self::PRODUCTS_FILE;
         return $url;

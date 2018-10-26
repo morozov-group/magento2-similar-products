@@ -10,20 +10,31 @@ class Index extends Action
 
     protected $sqlHelper;
 
+    protected $apiHelper;
+
     public function __construct(
         Context $context,
         \Morozov\Similarity\Helper\Data $defaultHelper,
-        \Morozov\Similarity\Helper\Sql $sqlHelper
+        \Morozov\Similarity\Helper\Sql $sqlHelper,
+        \Morozov\Similarity\Helper\Api $apiHelper
     ) {
         parent::__construct(
             $context
         );
         $this->defaultHelper = $defaultHelper;
         $this->sqlHelper = $sqlHelper;
+        $this->apiHelper = $apiHelper;
     }
 
     public function execute()
     {
+        // Api Helper
+        //var_dump($this->apiHelper->getNearestRegion());
+        //$this->apiHelper->collectProducts();
+        //$this->apiHelper->setAllProducts();
+        $ids = $this->apiHelper->getUpSells(1);
+        var_dump($ids);
+
         /*
         // Sql Helper
         echo '<pre>';
@@ -48,6 +59,6 @@ class Index extends Action
 
         $this->defaultHelper->log('TEST');
         */
-        //echo 'ee';
+
     }
 }

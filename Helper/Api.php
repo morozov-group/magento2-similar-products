@@ -12,7 +12,7 @@ class Api extends \Magento\Framework\App\Helper\AbstractHelper
     const PATH_REINDEX     = 'api/reindex';
 
     protected $csvColumns = [
-        'product_id',
+        'entity_id',
         'is_in_stock',
         'image'
     ];
@@ -32,15 +32,23 @@ class Api extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected $similaritySqlHelper;
 
+    protected $directoryList;
+
+    protected $storeManager;
+
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Framework\App\ResourceConnection $resourceConnection,
         \Morozov\Similarity\Helper\Data $similarityHelper,
-        \Morozov\Similarity\Helper\Sql $similaritySqlHelper
+        \Morozov\Similarity\Helper\Sql $similaritySqlHelper,
+        \Magento\Framework\App\Filesystem\DirectoryList $directoryList,
+        \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
         $this->resourceConnection = $resourceConnection;
         $this->similarityHelper = $similarityHelper;
         $this->similaritySqlHelper = $similaritySqlHelper;
+        $this->directoryList = $directoryList;
+        $this->storeManager = $storeManager;
         parent::__construct(
             $context
         );
@@ -52,7 +60,7 @@ class Api extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getUpSells($productId)
     {
-        $url = $this->getDefaultHelper()->getUrl() . sprintf(self::PATH_GET_UPSELLS, $productId);
+        $url = $this->similarityHelper->getUrl() . sprintf(self::PATH_GET_UPSELLS, $productId);
         if (!$response = @file_get_contents($url)) {
             return [];
         }
@@ -68,34 +76,37 @@ class Api extends \Magento\Framework\App\Helper\AbstractHelper
         return $ids;
     }
 
-    protected function collectProducts()
+    public function collectProducts()
     {
-        $csvDir = $this->getDefaultHelper()->getExportDir();
+        $csvDir = $this->similarityHelper->getExportDir();
+        $pubMediaDir = $this->directoryList->getPath(\Magento\Framework\App\Filesystem\DirectoryList::MEDIA);
+        $mediaUrl = $this->storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+
         if (!is_dir($csvDir)) {
             if (!mkdir($csvDir)) {
                 throw new \Exception('Failed to create export directory..');
             }
         }
-        if (!$f = fopen($this->getDefaultHelper()->getProductsFile(), 'w+')) {
+        if (!$f = fopen($this->similarityHelper->getProductsFile(), 'w+')) {
             throw new \Exception('Failed to create export Products file..');
         }
         fputcsv($f, $this->csvColumns);
 
         $resource = $this->resourceConnection;
         $read = $resource->getConnection('core_read');
-        $res = $read->query($this->getSqlHelper()->prepareExportProducts());
+        $res = $read->query($this->similaritySqlHelper->prepareExportProducts());
         if ($res) {
             $count = 0;
             while($row = $res->fetch(\PDO::FETCH_ASSOC)) {
                 $images = explode(',', $row['images']);
                 $image = $images[0];
                 if (self::CHECK_IMAGE_FILE_EXISTS) {
-                    $fileExists = file_exists(Mage::getBaseDir('media') . DS . 'catalog' . DS . 'product' . $image);
+                    $fileExists = file_exists($pubMediaDir . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'product' . $image);
                     if (!$fileExists) {
                         continue;
                     }
                 }
-                $url = Mage::getBaseUrl(\Magento\Store\Model\Store::URL_TYPE_MEDIA) . 'catalog/product' . $image;
+                $url = $mediaUrl . 'catalog/product' . $image;
                 $csvRow = [
                     $row['entity_id'],
                     $row['is_in_stock'],
@@ -104,7 +115,7 @@ class Api extends \Magento\Framework\App\Helper\AbstractHelper
                 fputcsv($f, $csvRow);
                 $count++;
             }
-            $this->getDefaultHelper()->log("Exported  $count  products");
+            $this->similarityHelper->log("Exported  $count  products");
         } else {
             throw new \Exception('Failed to execute SQL..');
         }
@@ -120,12 +131,13 @@ class Api extends \Magento\Framework\App\Helper\AbstractHelper
         $this->collectProducts();
 
         //@TODO: send CSV file to service
-        $url = $this->getDefaultHelper()->getUrl() . self::PATH_REINDEX;
+        $url = $this->similarityHelper->getUrl() . self::PATH_REINDEX;
         $data = [
-            'key' => $this->getDefaultHelper()->getKey(),
-            'file' => $this->getDefaultHelper()->getProductsFileUrl()
+            'key' => $this->similarityHelper->getKey(),
+            'file' => $this->similarityHelper->getProductsFileUrl()
         ];
         $json = \Zend_Json::encode($data);
+        //var_dump($json);
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
@@ -136,14 +148,14 @@ class Api extends \Magento\Framework\App\Helper\AbstractHelper
             'Content-Length: ' . strlen($json)
         ]);
         curl_setopt($ch, CURLOPT_NOSIGNAL, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT_MS, (int)$this->getDefaultHelper()->getTimeout());
+        curl_setopt($ch, CURLOPT_TIMEOUT_MS, (int)$this->similarityHelper->getTimeout());
         $result = curl_exec($ch);
 
         $info = curl_getinfo($ch);
         $error = curl_errno($ch);
-        $this->getDefaultHelper()->log($url);
-        $this->getDefaultHelper()->log($info['http_code']);
-        $this->getDefaultHelper()->log($result);
+        $this->similarityHelper->log($url);
+        $this->similarityHelper->log($info['http_code']);
+        $this->similarityHelper->log($result);
         if ($error) {
             $message = curl_error($ch);
             throw new \Exception($error . ' ' . $message);
@@ -176,15 +188,5 @@ class Api extends \Magento\Framework\App\Helper\AbstractHelper
         reset($distances);
         $nearestRegion = key($distances);
         return $nearestRegion;
-    }
-
-    protected function getDefaultHelper()
-    {
-        return $this->similarityHelper;
-    }
-
-    protected function getSqlHelper()
-    {
-        return Mage::helper('morozov_similarity/sql');
     }
 }
