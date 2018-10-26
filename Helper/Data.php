@@ -37,17 +37,21 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected $directoryList;
 
+    protected $state;
+
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\App\Filesystem\DirectoryList $directoryList
+        \Magento\Framework\App\Filesystem\DirectoryList $directoryList,
+        \Magento\Framework\App\State $state
     ) {
         $this->logger = $logger;
         $this->scopeConfig = $scopeConfig;
         $this->storeManager = $storeManager;
         $this->directoryList = $directoryList;
+        $this->state = $state;
 
         $logPath = $this->directoryList->getPath('log');
         $handler = new \Monolog\Handler\StreamHandler($logPath . DIRECTORY_SEPARATOR . self::LOG_FILE);
@@ -101,8 +105,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function canUse()
     {
+        //var_dump($this->state->getAreaCode());                  // frontend  adminhtml
+        //var_dump(\Magento\Framework\App\Area::AREA_ADMINHTML);  // adminhtml
+        //var_dump(\Magento\Framework\App\Area::AREA_FRONTEND);   // frontend
         $res = $this->getIsEnabled() && $this->getUrl() && $this->getKey();
-        $res = $res && (!$this->storeManager->getStore()->isAdmin());
+        $res = $res && ($this->state->getAreaCode() != \Magento\Framework\App\Area::AREA_ADMINHTML);
         return $res;
     }
 

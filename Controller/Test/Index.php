@@ -22,7 +22,7 @@ class Index extends Action
     {
         // Api Helper
 
-        /*
+
         // Data Helper
         var_dump($this->defaultHelper->getIsEnabled());
         var_dump($this->defaultHelper->getEmail());
@@ -32,12 +32,13 @@ class Index extends Action
 
         var_dump($this->defaultHelper->getUpSellMaxCount());
 
+        var_dump($this->defaultHelper->canUse());
         var_dump($this->defaultHelper->getExportDir());
         var_dump($this->defaultHelper->getProductsFile());
         var_dump($this->defaultHelper->getProductsFileUrl());
 
         $this->defaultHelper->log('TEST');
-        */
+
         //echo 'ee';
     }
 }
