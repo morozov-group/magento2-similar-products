@@ -18,7 +18,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     const PRODUCTS_FILE = 'products.csv';
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var \Magento\Framework\Logger\Monolog
      */
     protected $logger;
 
@@ -48,6 +48,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $this->scopeConfig = $scopeConfig;
         $this->storeManager = $storeManager;
         $this->directoryList = $directoryList;
+
+        $logPath = $this->directoryList->getPath('log');
+        $handler = new \Monolog\Handler\StreamHandler($logPath . DIRECTORY_SEPARATOR . self::LOG_FILE);
+        $this->logger->pushHandler($handler);
+
         parent::__construct(
             $context
         );
@@ -56,7 +61,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function log($message)
     {
-        $this->logger->log(null, $message);
+        $this->logger->log(\Psr\Log\LogLevel::INFO, $message);
     }
 
     public function getIsEnabled()

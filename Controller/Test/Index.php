@@ -20,7 +20,10 @@ class Index extends Action
 
     public function execute()
     {
+        // Api Helper
+
         /*
+        // Data Helper
         var_dump($this->defaultHelper->getIsEnabled());
         var_dump($this->defaultHelper->getEmail());
         var_dump($this->defaultHelper->getUrl());
@@ -32,6 +35,8 @@ class Index extends Action
         var_dump($this->defaultHelper->getExportDir());
         var_dump($this->defaultHelper->getProductsFile());
         var_dump($this->defaultHelper->getProductsFileUrl());
+
+        $this->defaultHelper->log('TEST');
         */
         //echo 'ee';
     }
