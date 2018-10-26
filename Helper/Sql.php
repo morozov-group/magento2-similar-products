@@ -10,11 +10,15 @@ class Sql extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected $resourceConnection;
 
+    protected $eavAttribute;
+
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
-        \Magento\Framework\App\ResourceConnection $resourceConnection
+        \Magento\Framework\App\ResourceConnection $resourceConnection,
+        \Magento\Eav\Model\ResourceModel\Entity\Attribute $eavAttribute
     ) {
         $this->resourceConnection = $resourceConnection;
+        $this->eavAttribute = $eavAttribute;
         parent::__construct(
             $context
         );
@@ -24,7 +28,7 @@ class Sql extends \Magento\Framework\App\Helper\AbstractHelper
     public function prepareExportProducts()
     {
         $resource = $this->resourceConnection;
-        $visibilityAttrId = Mage::getResourceModel('eav/entity_attribute')->getIdByCode('catalog_product', 'visibility');
+        $visibilityAttrId = (int)$this->eavAttribute->getIdByCode('catalog_product', 'visibility');
 
         $sql = <<< SQL
 SELECT
@@ -43,12 +47,12 @@ ON si.product_id = e.entity_id
 INNER JOIN
 (
     SELECT
-      mg.entity_id AS product_id,
+      mgv.entity_id AS product_id,
       GROUP_CONCAT(mg.value ORDER BY mgv.position {$this->imagesPositionOrder}) AS images
     FROM {$resource->getTableName('catalog_product_entity_media_gallery')} AS mg
     INNER JOIN {$resource->getTableName('catalog_product_entity_media_gallery_value')} AS mgv ON mgv.value_id = mg.value_id
     WHERE mgv.store_id = 0
-    GROUP BY mg.entity_id
+    GROUP BY mgv.entity_id
 )
 AS media ON media.product_id = e.entity_id
 

@@ -20,6 +20,6 @@ class Index extends \Magento\Backend\App\Action
 
     public function execute()
     {
-        var_dump($this->defaultHelper->canUse());
+        //var_dump($this->defaultHelper->canUse());
     }
 }

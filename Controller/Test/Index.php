@@ -8,21 +8,30 @@ class Index extends Action
 {
     protected $defaultHelper;
 
+    protected $sqlHelper;
+
     public function __construct(
         Context $context,
-        \Morozov\Similarity\Helper\Data $defaultHelper
+        \Morozov\Similarity\Helper\Data $defaultHelper,
+        \Morozov\Similarity\Helper\Sql $sqlHelper
     ) {
         parent::__construct(
             $context
         );
         $this->defaultHelper = $defaultHelper;
+        $this->sqlHelper = $sqlHelper;
     }
 
     public function execute()
     {
-        // Api Helper
+        /*
+        // Sql Helper
+        echo '<pre>';
+        echo $this->sqlHelper->prepareExportProducts();
+        echo '</pre>';
+        */
 
-
+        /*
         // Data Helper
         var_dump($this->defaultHelper->getIsEnabled());
         var_dump($this->defaultHelper->getEmail());
@@ -38,7 +47,7 @@ class Index extends Action
         var_dump($this->defaultHelper->getProductsFileUrl());
 
         $this->defaultHelper->log('TEST');
-
+        */
         //echo 'ee';
     }
 }
