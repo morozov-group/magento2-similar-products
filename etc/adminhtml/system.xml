@@ -22,14 +22,17 @@
                 </field>
                 <field id="url" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Service URL</label>
+                    <validate>required-entry</validate>
                     <comment/>
                 </field>
                 <field id="key" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Security Key</label>
+                    <validate>required-entry</validate>
                     <comment/>
                 </field>
                 <field id="timeout" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Allowed Service Timeout</label>
+                    <validate>required-entry</validate>
                     <comment>In milliseconds.</comment>
                 </field>
             </group>

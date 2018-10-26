@@ -6,18 +6,33 @@ use Magento\Framework\App\Action\Context;
 
 class Index extends Action
 {
+    protected $defaultHelper;
+
     public function __construct(
-        Context $context
+        Context $context,
+        \Morozov\Similarity\Helper\Data $defaultHelper
     ) {
         parent::__construct(
             $context
         );
-
-       
+        $this->defaultHelper = $defaultHelper;
     }
 
     public function execute()
     {
+        /*
+        var_dump($this->defaultHelper->getIsEnabled());
+        var_dump($this->defaultHelper->getEmail());
+        var_dump($this->defaultHelper->getUrl());
+        var_dump($this->defaultHelper->getKey());
+        var_dump($this->defaultHelper->getTimeout());
 
+        var_dump($this->defaultHelper->getUpSellMaxCount());
+
+        var_dump($this->defaultHelper->getExportDir());
+        var_dump($this->defaultHelper->getProductsFile());
+        var_dump($this->defaultHelper->getProductsFileUrl());
+        */
+        //echo 'ee';
     }
 }
