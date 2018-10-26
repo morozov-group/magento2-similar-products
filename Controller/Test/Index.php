@@ -32,8 +32,8 @@ class Index extends Action
         //var_dump($this->apiHelper->getNearestRegion());
         //$this->apiHelper->collectProducts();
         //$this->apiHelper->setAllProducts();
-        $ids = $this->apiHelper->getUpSells(1);
-        var_dump($ids);
+        //$ids = $this->apiHelper->getUpSells(1);
+        //var_dump($ids);
 
         /*
         // Sql Helper
