@@ -7,12 +7,16 @@ class Product
 
     protected $defaultHelper;
 
+    protected $apiHelper;
+
     public function __construct(
         \Magento\Catalog\Model\ResourceModel\Product\Link\Product\CollectionFactory $collectionFactory,
-        \Morozov\Similarity\Helper\Data $defaultHelper
+        \Morozov\Similarity\Helper\Data $defaultHelper,
+        \Morozov\Similarity\Helper\Api $apiHelper
     ) {
         $this->collectionFactory = $collectionFactory;
         $this->defaultHelper = $defaultHelper;
+        $this->apiHelper = $apiHelper;
     }
 
     public function afterGetUpSellProductCollection(
@@ -22,10 +26,11 @@ class Product
     {
         if ($this->defaultHelper->canUse()) {
             try {
-                //@TODO: pull upsells from the service
-                $productCollection = $this->collectionFactory->create();
-                $productCollection->addAttributeToFilter('entity_id', ['in' => [7, 8]]);
-                return $productCollection;
+                if ($ids = $this->apiHelper->getUpSells($product->getEntityId())) {
+                    $productCollection = $this->collectionFactory->create();
+                    $productCollection->addAttributeToFilter('entity_id', ['in' => $ids]);
+                    return $productCollection;
+                }
             } catch (\Exception $e) {
                 $this->defaultHelper->log($e->getMessage());
             }
