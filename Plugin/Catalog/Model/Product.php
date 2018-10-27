@@ -28,7 +28,15 @@ class Product
             try {
                 if ($ids = $this->apiHelper->getUpSells($product->getEntityId())) {
                     $productCollection = $this->collectionFactory->create();
-                    $productCollection->addAttributeToFilter('entity_id', ['in' => $ids]);
+                    $productCollection
+                        ->addAttributeToFilter('entity_id', ['in' => $ids])
+                    ;
+                    if ($this->defaultHelper->getUpSellMaxCount()) {
+                        $productCollection
+                            ->setPageSize($this->defaultHelper->getUpSellMaxCount())
+                            ->setCurPage(1)
+                        ;
+                    }
                     return $productCollection;
                 }
             } catch (\Exception $e) {
