@@ -10,7 +10,7 @@ class Product
     protected $apiHelper;
 
     public function __construct(
-        \Magento\Catalog\Model\ResourceModel\Product\Link\Product\CollectionFactory $collectionFactory,
+        \Morozov\Similarity\Model\ResourceModel\Product\Link\Product\CollectionFactory $collectionFactory,
         \Morozov\Similarity\Helper\Data $defaultHelper,
         \Morozov\Similarity\Helper\Api $apiHelper
     ) {
@@ -37,6 +37,7 @@ class Product
                             ->setCurPage(1)
                         ;
                     }
+                    //@TODO: sort products, probably customize setPositionOrder()...
                     return $productCollection;
                 }
             } catch (\Exception $e) {
