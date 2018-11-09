@@ -3,4 +3,11 @@
     <type name="Magento\Catalog\Model\Product">
         <plugin name="plugGetUpSellProductCollection" type="Morozov\Similarity\Plugin\Catalog\Model\Product" />
     </type>
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="morozovSimilarityReindexAll" xsi:type="object">Morozov\Similarity\Console\Command\ReindexAll</item>
+            </argument>
+        </arguments>
+    </type>
 </config>
