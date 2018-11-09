@@ -12,24 +12,18 @@ use Symfony\Component\Console\Command\Command;
 class ReindexAll extends Command
 {
     /**
-     * @var \Magento\Framework\App\State
+     * @var \Morozov\Similarity\Helper\Api
      */
-    private $appState;
+    private $apiHelper;
+
 
     /**
-     * @var Actions
-     */
-    private $actions;
-
-    /**
-     * @param \Magento\Framework\App\State $appState
-     * @param Actions $actions
+     * @param \Morozov\Similarity\Helper\Api $apiHelper
      */
     public function __construct(
-        \Magento\Framework\App\State $appState
+        \Morozov\Similarity\Helper\Api $apiHelper
     ) {
-        $this->appState = $appState;
-        //$this->actions = $actions;
+        $this->apiHelper = $apiHelper;
         parent::__construct();
     }
 
@@ -49,8 +43,11 @@ class ReindexAll extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->setDecorated(true);
-        $output->writeln("");
-        $output->writeln("111111111");
-
+        try {
+            $this->apiHelper->setAllProducts();
+            $output->writeln('Products were successfully pushed to the service.');
+        } catch (\Exception $e) {
+            $output->writeln($e->getMessage());
+        }
     }
 }
