@@ -4,41 +4,41 @@
         <tab id="morozov_similarity" sortOrder="1999" translate="label">
             <label>Similarity</label>
         </tab>
-        <section id="morozov_similarity" translate="label" showInDefault="1" showInWebsite="0" showInStore="0">
+        <section id="morozov_similarity" translate="label" showInDefault="1" showInWebsite="1" showInStore="1">
             <class>separator-top</class>
             <label>Similarity</label>
             <tab>morozov_similarity</tab>
             <resource>Morozov_Similarity::morozov_similarity</resource>
-            <group id="general" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+            <group id="general" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General</label>
-                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="email" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="email" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Contact Email</label>
                     <validate>required-entry</validate>
                     <comment>Comment.</comment>
                 </field>
-                <field id="url" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="url" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Service URL</label>
                     <validate>required-entry</validate>
                     <comment/>
                 </field>
-                <field id="key" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="key" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Security Key</label>
                     <validate>required-entry</validate>
                     <comment/>
                 </field>
-                <field id="timeout" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="timeout" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Allowed Service Timeout</label>
                     <validate>required-entry</validate>
                     <comment>In milliseconds.</comment>
                 </field>
             </group>
-            <group id="upsell_options" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0" >
+            <group id="upsell_options" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" >
                 <label>Up-sell Options</label>
-                <field id="upsell_max_count" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="upsell_max_count" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Default Maximum Products to Display</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Comment.</comment>
