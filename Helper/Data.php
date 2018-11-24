@@ -6,10 +6,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     const LOG_FILE      = 'morozov_similarity.log';
 
     const PATH_ENABLED  = 'morozov_similarity/general/active';
+    const PATH_EMAIL    = 'morozov_similarity/general/email';
     const PATH_URL      = 'morozov_similarity/general/url';
     const PATH_KEY      = 'morozov_similarity/general/key';
-    const PATH_EMAIL    = 'morozov_similarity/general/email';
-    const PATH_PASSWORD = 'morozov_similarity/general/password';
     const PATH_TIMEOUT  = 'morozov_similarity/general/timeout';
 
     const PATH_UPSELL_MAXCOUNT = 'morozov_similarity/upsell_options/upsell_max_count';
@@ -78,6 +77,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return $this->scopeConfig->isSetFlag(self::PATH_ENABLED, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
     }
 
+    public function getEmail()
+    {
+        return $this->scopeConfig->getValue(self::PATH_EMAIL, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+    }
+
     public function getUrl()
     {
         return $this->scopeConfig->getValue(self::PATH_URL, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
@@ -86,16 +90,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function getKey()
     {
         return $this->scopeConfig->getValue(self::PATH_KEY, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
-    }
-
-    public function getEmail()
-    {
-        return $this->scopeConfig->getValue(self::PATH_EMAIL, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
-    }
-
-    public function getPassword()
-    {
-        return $this->scopeConfig->getValue(self::PATH_PASSWORD, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
     }
 
     public function getTimeout()
