@@ -46,7 +46,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected $state;
 
-    protected $scopeCode;
+    //protected $scopeCode;
+
+    protected $store;
 
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
@@ -147,9 +149,15 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return $dir;
     }
 
+    protected function getProductsFileName()
+    {
+        $filename = $this->getStore() ? "products_{$this->getStoreId()}.csv" : 'products.csv';
+        return $filename;
+    }
+
     public function getProductsFile()
     {
-        $file = $this->getExportDir() . DIRECTORY_SEPARATOR . self::PRODUCTS_FILE;
+        $file = $this->getExportDir() . DIRECTORY_SEPARATOR . $this->getProductsFileName();
         return $file;
     }
 
@@ -164,14 +172,33 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return $url;
     }
 
+    /*
     public function setScopeCode($scopeCode)
     {
         $this->scopeCode = $scopeCode;
     }
+    */
+
+    public function setStore($store)
+    {
+        $this->store = $store;
+    }
+
+    public function getStore()
+    {
+        return $this->store;
+    }
 
     public function getScopeCode()
     {
-        return $this->scopeCode;
+        $code = $this->getStore() ? $this->getStore()->getCode() : null;
+        return $code;
+    }
+
+    public function getStoreId()
+    {
+        $id = $this->getStore() ? (int)$this->getStore()->getId() : null;
+        return $id;
     }
 
     public function getStores()

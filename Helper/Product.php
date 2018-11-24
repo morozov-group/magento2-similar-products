@@ -66,7 +66,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
         $resource = $this->resourceConnection;
         $read = $resource->getConnection('core_read');
-        $res = $read->query($this->similaritySqlHelper->prepareExportProducts());
+        $res = $read->query($this->similaritySqlHelper->prepareExportProducts((int)$this->similarityHelper->getStoreId()));
         if ($res) {
             $count = 0;
             while($row = $res->fetch(\PDO::FETCH_ASSOC)) {

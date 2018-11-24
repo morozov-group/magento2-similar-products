@@ -12,6 +12,11 @@ use Symfony\Component\Console\Command\Command;
 class ReindexAll extends Command
 {
     /**
+     * @var \Morozov\Similarity\Helper\Data
+     */
+    private $defaultHelper;
+
+    /**
      * @var \Morozov\Similarity\Helper\Api
      */
     private $apiHelper;
@@ -21,8 +26,10 @@ class ReindexAll extends Command
      * @param \Morozov\Similarity\Helper\Api $apiHelper
      */
     public function __construct(
+        \Morozov\Similarity\Helper\Data $defaultHelper,
         \Morozov\Similarity\Helper\Api $apiHelper
     ) {
+        $this->defaultHelper = $defaultHelper;
         $this->apiHelper = $apiHelper;
         parent::__construct();
     }
@@ -43,11 +50,21 @@ class ReindexAll extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->setDecorated(true);
-        try {
-            $this->apiHelper->setAllProducts();
-            $output->writeln('Products were successfully pushed to the service.');
-        } catch (\Exception $e) {
-            $output->writeln($e->getMessage());
+        foreach($this->defaultHelper->getStores() as $store) {
+            try {
+                $msg = "Pushing Products to the service (Store ID = {$store->getId()}): ";
+                $output->write($msg);
+                $this->defaultHelper->log('');
+                $this->defaultHelper->log($msg);
+                $this->defaultHelper->setStore($store);
+                $this->apiHelper->setAllProducts();
+                $msg = 'Done.';
+                $output->writeln($msg);
+                $this->defaultHelper->log($msg);
+            } catch (\Exception $e) {
+                $output->writeln($e->getMessage());
+                $this->defaultHelper->log($e->getMessage());
+            }
         }
     }
 }
