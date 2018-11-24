@@ -3,19 +3,11 @@ namespace Morozov\Similarity\Helper;
 
 class Api extends \Magento\Framework\App\Helper\AbstractHelper
 {
-    const CHECK_IMAGE_FILE_EXISTS = true;
-
     const MASTER_URL       = 'https://master.similarity.morozov.group/';
     const PATH_REGIONS     = 'api/regions';
 
     const PATH_GET_UPSELLS = 'api/view/%s';
     const PATH_REINDEX     = 'api/reindex';
-
-    protected $csvColumns = [
-        'entity_id',
-        'is_in_stock',
-        'image'
-    ];
 
     /**
      * @var \Magento\Framework\App\ResourceConnection
@@ -28,32 +20,23 @@ class Api extends \Magento\Framework\App\Helper\AbstractHelper
     protected $similarityHelper;
 
     /**
-     * @var \Morozov\Similarity\Helper\Sql
+     * @var \Morozov\Similarity\Helper\Product
      */
-    protected $similaritySqlHelper;
-
-    protected $directoryList;
-
-    protected $storeManager;
+    protected $productHelper;
 
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Framework\App\ResourceConnection $resourceConnection,
         \Morozov\Similarity\Helper\Data $similarityHelper,
-        \Morozov\Similarity\Helper\Sql $similaritySqlHelper,
-        \Magento\Framework\App\Filesystem\DirectoryList $directoryList,
-        \Magento\Store\Model\StoreManagerInterface $storeManager
+        \Morozov\Similarity\Helper\Product $productHelper
     ) {
         $this->resourceConnection = $resourceConnection;
         $this->similarityHelper = $similarityHelper;
-        $this->similaritySqlHelper = $similaritySqlHelper;
-        $this->directoryList = $directoryList;
-        $this->storeManager = $storeManager;
+        $this->productHelper = $productHelper;
         parent::__construct(
             $context
         );
     }
-
 
     /**
      * Service ==> Magento
@@ -76,59 +59,13 @@ class Api extends \Magento\Framework\App\Helper\AbstractHelper
         return $ids;
     }
 
-    public function collectProducts()
-    {
-        $csvDir = $this->similarityHelper->getExportDir();
-        $pubMediaDir = $this->directoryList->getPath(\Magento\Framework\App\Filesystem\DirectoryList::MEDIA);
-        $mediaUrl = $this->storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
-
-        if (!is_dir($csvDir)) {
-            if (!mkdir($csvDir)) {
-                throw new \Exception('Failed to create export directory..');
-            }
-        }
-        if (!$f = fopen($this->similarityHelper->getProductsFile(), 'w+')) {
-            throw new \Exception('Failed to create export Products file..');
-        }
-        fputcsv($f, $this->csvColumns);
-
-        $resource = $this->resourceConnection;
-        $read = $resource->getConnection('core_read');
-        $res = $read->query($this->similaritySqlHelper->prepareExportProducts());
-        if ($res) {
-            $count = 0;
-            while($row = $res->fetch(\PDO::FETCH_ASSOC)) {
-                $images = explode(',', $row['images']);
-                $image = $images[0];
-                if (self::CHECK_IMAGE_FILE_EXISTS) {
-                    $fileExists = file_exists($pubMediaDir . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'product' . $image);
-                    if (!$fileExists) {
-                        continue;
-                    }
-                }
-                $url = $mediaUrl . 'catalog/product' . $image;
-                $csvRow = [
-                    $row['entity_id'],
-                    $row['is_in_stock'],
-                    $url
-                ];
-                fputcsv($f, $csvRow);
-                $count++;
-            }
-            $this->similarityHelper->log("Exported  $count  products");
-        } else {
-            throw new \Exception('Failed to execute SQL..');
-        }
-
-        fclose($f);
-    }
-
     /**
      * Service <== Magento
      */
     public function setAllProducts()
     {
-        $this->collectProducts();
+        //$this->collectProducts();
+        $this->productHelper->collect();
 
         //@TODO: send CSV file to service
         $url = $this->similarityHelper->getUrl() . self::PATH_REINDEX;
