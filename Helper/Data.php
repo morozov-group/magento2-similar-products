@@ -10,6 +10,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     const PATH_URL      = 'morozov_similarity/general/url';
     const PATH_KEY      = 'morozov_similarity/general/key';
     const PATH_TIMEOUT  = 'morozov_similarity/general/timeout';
+    const PATH_CRON_ENABLED        = 'morozov_similarity/general/cron_enabled';
+    const PATH_IMAGE_CHECK_ENABLED = 'morozov_similarity/general/image_check_enabled';
 
     const PATH_UPSELL_MAXCOUNT = 'morozov_similarity/upsell_options/upsell_max_count';
 
@@ -118,6 +120,24 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     {
         return $this->scopeConfig->getValue(
             self::PATH_TIMEOUT,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $this->getScopeCode()
+        );
+    }
+
+    public function getCronEnabled()
+    {
+        return $this->scopeConfig->isSetFlag(
+            self::PATH_CRON_ENABLED,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $this->getScopeCode()
+        );
+    }
+
+    public function getImageCheckEnabled()
+    {
+        return $this->scopeConfig->isSetFlag(
+            self::PATH_IMAGE_CHECK_ENABLED,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
             $this->getScopeCode()
         );
