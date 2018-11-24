@@ -41,7 +41,12 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected $directoryList;
 
+    /**
+     * @var \Magento\Framework\App\State
+     */
     protected $state;
+
+    protected $scopeCode;
 
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
@@ -66,7 +71,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         );
     }
 
-
     public function log($message)
     {
         $this->logger->log(\Psr\Log\LogLevel::INFO, $message);
@@ -74,32 +78,56 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function getIsEnabled()
     {
-        return $this->scopeConfig->isSetFlag(self::PATH_ENABLED, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        return $this->scopeConfig->isSetFlag(
+            self::PATH_ENABLED,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $this->getScopeCode()
+        );
     }
 
     public function getEmail()
     {
-        return $this->scopeConfig->getValue(self::PATH_EMAIL, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        return $this->scopeConfig->getValue(
+            self::PATH_EMAIL,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $this->getScopeCode()
+        );
     }
 
     public function getUrl()
     {
-        return $this->scopeConfig->getValue(self::PATH_URL, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        return $this->scopeConfig->getValue(
+            self::PATH_URL,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $this->getScopeCode()
+        );
     }
 
     public function getKey()
     {
-        return $this->scopeConfig->getValue(self::PATH_KEY, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        return $this->scopeConfig->getValue(
+            self::PATH_KEY,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $this->getScopeCode()
+        );
     }
 
     public function getTimeout()
     {
-        return $this->scopeConfig->getValue(self::PATH_TIMEOUT, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        return $this->scopeConfig->getValue(
+            self::PATH_TIMEOUT,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $this->getScopeCode()
+        );
     }
 
     public function getUpSellMaxCount()
     {
-        return (int)$this->scopeConfig->getValue(self::PATH_UPSELL_MAXCOUNT, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        return (int)$this->scopeConfig->getValue(
+            self::PATH_UPSELL_MAXCOUNT,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $this->getScopeCode()
+        );
     }
 
     public function canUse()
@@ -134,5 +162,21 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $mediaUrl = $this->storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
         $url = $mediaUrl . self::EXPORT_DIR . '/' . self::PRODUCTS_FILE;
         return $url;
+    }
+
+    public function setScopeCode($scopeCode)
+    {
+        $this->scopeCode = $scopeCode;
+    }
+
+    public function getScopeCode()
+    {
+        return $this->scopeCode;
+    }
+
+    public function getStores()
+    {
+        $stores = $this->storeManager->getStores();
+        return $stores;
     }
 }
