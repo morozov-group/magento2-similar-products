@@ -2,6 +2,11 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
 	<default>
 		<morozov_similarity>
+			<general>
+				<active>0</active>
+				<cron_enabled>1</cron_enabled>
+                <image_check_enabled>1</image_check_enabled>
+			</general>
 		</morozov_similarity>
 	</default>
 </config>
