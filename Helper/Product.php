@@ -72,9 +72,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             while($row = $res->fetch(\PDO::FETCH_ASSOC)) {
                 $images = explode(',', $row['images']);
                 $image = $images[0];
-                if (self::CHECK_IMAGE_FILE_EXISTS) {
-                    $fileExists = file_exists($pubMediaDir . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'product' . $image);
-                    if (!$fileExists) {
+                if ($this->similarityHelper->getImageCheckEnabled()) {
+                    $isFile = is_file($pubMediaDir . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'product' . $image);
+                    if (!$isFile) {
                         continue;
                     }
                 }

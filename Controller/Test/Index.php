@@ -12,11 +12,14 @@ class Index extends Action
 
     protected $apiHelper;
 
+    protected $storeManager;
+
     public function __construct(
         Context $context,
         \Morozov\Similarity\Helper\Data $defaultHelper,
         \Morozov\Similarity\Helper\Sql $sqlHelper,
-        \Morozov\Similarity\Helper\Api $apiHelper
+        \Morozov\Similarity\Helper\Api $apiHelper,
+        \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
         parent::__construct(
             $context
@@ -24,10 +27,25 @@ class Index extends Action
         $this->defaultHelper = $defaultHelper;
         $this->sqlHelper = $sqlHelper;
         $this->apiHelper = $apiHelper;
+        $this->storeManager = $storeManager;
     }
 
     public function execute()
     {
+        /*
+        foreach($this->defaultHelper->getStores() as $store) {
+            echo '<pre>';
+            //var_dump($key);
+            //var_dump($value['code']);
+            //var_dump(get_class($value)); // Magento\Store\Model\Store\Interceptor
+            var_dump($store->getId());
+            var_dump($store->getCode());
+            //@file_put_contents('l.log', print_r(array_keys($value), 1), FILE_APPEND);
+            echo '</pre>';
+        }
+        exit;
+        */
+
         // Api Helper
         //var_dump($this->apiHelper->getNearestRegion());
         //$this->apiHelper->collectProducts();
@@ -41,6 +59,14 @@ class Index extends Action
         echo $this->sqlHelper->prepareExportProducts();
         echo '</pre>';
         */
+
+        var_dump($this->defaultHelper->getCronEnabled());
+        var_dump($this->defaultHelper->getImageCheckEnabled());
+        exit;
+
+        //$this->defaultHelper->setScopeCode('default');
+        //var_dump($this->defaultHelper->getUpSellMaxCount());
+        //exit;
 
         /*
         // Data Helper

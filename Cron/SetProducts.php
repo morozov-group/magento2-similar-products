@@ -18,12 +18,20 @@ class SetProducts
 
     public function execute()
     {
-        try {
-            //if ($this->defaultHelper->canUse()) {
-                $this->apiHelper->setAllProducts();
-            //}
-        } catch (\Exception $e) {
-            $this->defaultHelper->log($e->getMessage());
+        foreach($this->defaultHelper->getStores() as $store) {
+            try {
+                $this->defaultHelper->setStore($store);
+                if ($this->defaultHelper->getCronEnabled()) {
+                    $msg = "Pushing Products to the service (Store ID = {$store->getId()}): ";
+                    $this->defaultHelper->log('');
+                    $this->defaultHelper->log($msg);
+                    $this->apiHelper->setAllProducts();
+                    $msg = 'Done.';
+                    $this->defaultHelper->log($msg);
+                }
+            } catch (\Exception $e) {
+                $this->defaultHelper->log($e->getMessage());
+            }
         }
     }
 }
