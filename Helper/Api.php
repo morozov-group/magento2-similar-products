@@ -45,7 +45,8 @@ class Api extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $url = $this->similarityHelper->getUrl() . sprintf(self::PATH_GET_UPSELLS, $productId);
         if (!$response = @file_get_contents($url)) {
-            return [];
+            throw new \Exception($url . ' empty response');
+            //return [];
         }
         $response = str_replace("NaN", '"NaN"', $response);
         $items = \Zend_Json::decode($response);  // error
