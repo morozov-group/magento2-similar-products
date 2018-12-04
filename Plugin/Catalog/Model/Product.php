@@ -19,9 +19,9 @@ class Product
         $this->apiHelper = $apiHelper;
     }
 
-    public function afterGetUpSellProductCollection(
+    public function aroundGetUpSellProductCollection(
         \Magento\Catalog\Model\Product $product,
-        $upSellProductsCollection
+        \Closure $proceed
     )
     {
         if ($this->defaultHelper->canUse()) {
@@ -45,6 +45,6 @@ class Product
             }
         }
 
-        return $upSellProductsCollection;
+        return $proceed();
     }
 }
