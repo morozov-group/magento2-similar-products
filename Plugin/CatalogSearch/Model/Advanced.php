@@ -9,19 +9,19 @@ class Advanced
 
     protected $apiHelper;
 
-    protected $advancedSearchHelper;
+    protected $requestHelper;
 
     protected $request;
 
     public function __construct(
         \Morozov\Similarity\Helper\Data $defaultHelper,
         \Morozov\Similarity\Helper\Api $apiHelper,
-        \Morozov\Similarity\Helper\AdvancedSearch $advancedSearchHelper,
+        \Morozov\Similarity\Helper\Request $requestHelper,
         \Magento\Framework\App\RequestInterface $request
     ) {
         $this->defaultHelper = $defaultHelper;
         $this->apiHelper = $apiHelper;
-        $this->advancedSearchHelper = $advancedSearchHelper;
+        $this->requestHelper = $requestHelper;
         $this->request = $request;
     }
 
@@ -33,11 +33,11 @@ class Advanced
     {
         try {
             $proceed($values);
-            if ($similar = $this->advancedSearchHelper->getSimilar()) {
+            if ($similar = $this->requestHelper->getSimilar()) {
                 $this->addSimilarFilters($advanced, $similar);
             }
         } catch (LocalizedException $e) {
-            if (($similar = $this->advancedSearchHelper->getSimilar()) && $this->detectTermsNotSpecifiedMsg($e->getMessage())) {
+            if (($similar = $this->requestHelper->getSimilar()) && $this->detectTermsNotSpecifiedMsg($e->getMessage())) {
                 $this->addSimilarFilters($advanced, $similar);
             } else {
                 throw $e;

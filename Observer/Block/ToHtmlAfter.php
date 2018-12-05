@@ -5,13 +5,13 @@ use Magento\Framework\Event\ObserverInterface;
 
 class ToHtmlAfter implements ObserverInterface
 {
-    protected $advancedSearchHelper;
+    protected $requestHelper;
 
     public function __construct(
-        \Morozov\Similarity\Helper\AdvancedSearch $advancedSearchHelper
+        \Morozov\Similarity\Helper\Request $requestHelper
     )
     {
-        $this->advancedSearchHelper = $advancedSearchHelper;
+        $this->requestHelper = $requestHelper;
     }
 
     public function execute(\Magento\Framework\Event\Observer $observer)
@@ -27,11 +27,11 @@ class ToHtmlAfter implements ObserverInterface
 
     protected function injectSimilarFormInput($block, $html)
     {
-        if ($similar = $this->advancedSearchHelper->getSimilar()) {
+        if ($similar = $this->requestHelper->getSimilar()) {
             $url = str_replace(['/'], ['\/'], $block->getSearchPostUrl());
             $html = preg_replace(
                 "/(<form(.)+($url)(.)+>)/i",
-                "$1" . $this->advancedSearchHelper->getSimilarFormInput($similar),
+                "$1" . $this->requestHelper->getSimilarFormInput($similar),
                 $html
             );
         }

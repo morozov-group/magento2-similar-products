@@ -3,7 +3,7 @@ namespace Morozov\Similarity\Helper;
 
 use Magento\Framework\App\Helper\Context;
 
-class AdvancedSearch extends \Magento\Framework\App\Helper\AbstractHelper
+class Request extends \Magento\Framework\App\Helper\AbstractHelper
 {
     protected $similarVarName = 'similar';
 
