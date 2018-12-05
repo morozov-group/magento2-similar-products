@@ -33,12 +33,12 @@ class Advanced
     {
         try {
             $proceed($values);
-            if ($this->getSimilar()) {
-                $this->addSimilarFilters($advanced, $this->getSimilar());
+            if ($similar = $this->advancedSearchHelper->getSimilar()) {
+                $this->addSimilarFilters($advanced, $similar);
             }
         } catch (LocalizedException $e) {
-            if ($this->getSimilar() && $this->detectTermsNotSpecifiedMsg($e->getMessage())) {
-                $this->addSimilarFilters($advanced, $this->getSimilar());
+            if (($similar = $this->advancedSearchHelper->getSimilar()) && $this->detectTermsNotSpecifiedMsg($e->getMessage())) {
+                $this->addSimilarFilters($advanced, $similar);
             } else {
                 throw $e;
             }
@@ -53,11 +53,13 @@ class Advanced
         return $res;
     }
 
+    /*
     protected function getSimilar()
     {
         $similar = $this->request->getParam($this->advancedSearchHelper->getSimilarVarName());
         return $similar;
     }
+    */
 
     protected function addSimilarFilters(\Magento\CatalogSearch\Model\Advanced $advanced, $similar)
     {
