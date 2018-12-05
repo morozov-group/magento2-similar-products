@@ -9,15 +9,19 @@ class Router implements \Magento\Framework\App\RouterInterface
 
     protected $response;
 
+    protected $defaultHelper;
+
     protected $routerHelper;
 
     public function __construct(
         \Magento\Framework\App\ActionFactory $actionFactory,
         \Magento\Framework\App\ResponseInterface $response,
+        \Morozov\Similarity\Helper\Data $defaultHelper,
         \Morozov\Similarity\Helper\Router $routerHelper
     ) {
         $this->actionFactory = $actionFactory;
         $this->response = $response;
+        $this->defaultHelper = $defaultHelper;
         $this->routerHelper = $routerHelper;
     }
 
@@ -52,6 +56,8 @@ class Router implements \Magento\Framework\App\RouterInterface
                     'Magento\Framework\App\Action\Forward',
                     ['request' => $request]
                 );
+            } else {
+                $this->defaultHelper->log('Router: failed to load Product by URL ' . $request->getPathInfo());
             }
         }
 
