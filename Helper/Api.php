@@ -44,7 +44,17 @@ class Api extends \Magento\Framework\App\Helper\AbstractHelper
     public function getUpSells($productId)
     {
         $url = $this->similarityHelper->getUrl() . sprintf(self::PATH_GET_UPSELLS, $productId);
-        if (!$response = @file_get_contents($url)) {
+        $ctxParams = [];
+        $toSec = $this->similarityHelper->getTimeoutSec();
+        if ($toSec > 0.0) {
+            $ctxParams = [
+                'http' => [
+                    'timeout' => $toSec,  // In seconds (float), example 0.2, 0.5...
+                ]
+            ];
+        }
+        $ctx = stream_context_create($ctxParams);
+        if (!$response = @file_get_contents($url, false, $ctx)) {
             throw new \Exception($url . ' empty response');
             //return [];
         }

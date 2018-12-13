@@ -125,6 +125,12 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         );
     }
 
+    public function getTimeoutSec()
+    {
+        $to = (float)(((int)$this->getTimeout()) / 1000.0);
+        return $to;
+    }
+
     public function getCronEnabled()
     {
         return $this->scopeConfig->isSetFlag(
