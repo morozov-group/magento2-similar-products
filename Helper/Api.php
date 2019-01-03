@@ -54,7 +54,8 @@ class Api extends \Magento\Framework\App\Helper\AbstractHelper
             ];
         }
         $ctx = stream_context_create($ctxParams);
-        if (!$response = @file_get_contents($url, false, $ctx)) {
+        $response = file_get_contents($url, false, $ctx);
+        if (!$response) {
             throw new \Exception($url . ' empty response');
             //return [];
         }
