@@ -1,5 +1,11 @@
 # magento2-similar-products
-Magento 2 extension which provides block with really similar products.
+Magento 2 Similarity extension which provides connectivity with [Similarity Engine](https://morozov.group/en/similarity).
+
+1. Automated Upsells for every product
+2. Visualy Similar products for specified product /catalogsearch/advanced/result/?similar=PRODUCT_ID
+3. Visualy Similar products within same category category.html?similar=PRODUCT_ID
+4. (Near future) CMS Widget to put similar products any where.
+5. (Near future) Category filling assistant, for some special events or campaigns.
 
 ## Installation
 Simple installation via composer.
