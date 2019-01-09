@@ -17,3 +17,6 @@ Go to configuration enter your email, and we'll take care of everything else.
 You will receive email once we are ready to serve similar products recommendations.
 
 Then you can proceed with customizations.
+
+## Contributions and new ideas 
+You are welcome to post tickets and pull requests.
