@@ -62,7 +62,7 @@ class Index extends Action
 
         var_dump($this->defaultHelper->getCronEnabled());
         var_dump($this->defaultHelper->getImageCheckEnabled());
-        exit;
+        return;
 
         //$this->defaultHelper->setScopeCode('default');
         //var_dump($this->defaultHelper->getUpSellMaxCount());

@@ -34,4 +34,5 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
         
       # run tests!
-      - run: phpunit
+      - run: composer run configure-phpcs
+      - run: php vendor/bin/phpcs -n
