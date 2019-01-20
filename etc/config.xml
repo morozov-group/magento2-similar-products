@@ -4,9 +4,16 @@
 		<morozov_similarity>
 			<general>
 				<active>0</active>
+				<email>mp@bk.ru</email>
+				<url>http://35.230.187.53/</url>
+				<key>MPTESTKEY</key>
+				<timeout>500</timeout>
 				<cron_enabled>1</cron_enabled>
                 <image_check_enabled>1</image_check_enabled>
 			</general>
+			<upsell_options>
+				<upsell_max_count>10</upsell_max_count>
+			</upsell_options>
 		</morozov_similarity>
 	</default>
 </config>
