@@ -6,7 +6,7 @@ Magento 2 Similarity extension which provides connectivity with [Similarity Engi
 1. Automated Upsells for every product
 2. Visualy Similar products for specified product /catalogsearch/advanced/result/?similar=PRODUCT_ID
 3. Visualy Similar products within same category category.html?similar=PRODUCT_ID
-4. CMS Widget to put similar products any where for sprified PRODUCT_ID.
+4. CMS Widget to put similar products any where for specified PRODUCT_ID.
 5. (Near future) Category filling assistant, for some special events or campaigns.
 
 ## Installation
