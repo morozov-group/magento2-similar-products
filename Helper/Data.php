@@ -189,11 +189,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function getProductsFileUrl()
     {
-        if (self::LOCAL_MODE) {
-            return 'https://www.bragardusa.net/media/morozov_similarity/products-m23.csv';
-        }
-
-        $mediaUrl = $this->storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+        $mediaUrl = $this->storeManager->getStore()->getBaseUrl() . "media" . "/";
         $url = $mediaUrl . self::EXPORT_DIR . '/' . $this->getProductsFileName();
         return $url;
     }
