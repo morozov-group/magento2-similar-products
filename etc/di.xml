@@ -13,4 +13,10 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Catalog\Model\ResourceModel\Product\Collection">
+        <plugin name="afterPrintLogQuery" type="Morozov\Similarity\Plugin\Catalog\Model\ResourceModel\Product\Collection"/>
+    </type>
+    <type name="Smile\ElasticsuiteCore\Client\Client">
+        <plugin name="beforeSearch" type="Morozov\Similarity\Plugin\ElasticsuiteCore\Client\Client"/>
+    </type>
 </config>
