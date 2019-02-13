@@ -40,17 +40,67 @@ class Collection
         $this->_request = $request;
     }
 
+    /**
+     * @param \Magento\Catalog\Model\ResourceModel\Product\Collection $subject
+     * @param bool $printQuery
+     * @param bool $logQuery
+     * @return array
+     * @throws \Exception
+     */
     public function beforeLoad(
         \Magento\Catalog\Model\ResourceModel\Product\Collection $subject,
         $printQuery = false,
         $logQuery = false
     ) {
-        if ($this->_registry->registry('current_category') &&
-            $similar = $this->_request->getParam('similar')) {
-            if ($ids = $this->_helper->getUpSells($similar)) {
-                $subject->addFieldToFilter('entity_id', ['in' => $ids]);
-            }
+        if ($ids = $this->_getIds()) {
+            $subject->addFieldToFilter('entity_id', ['in' => $ids]);
+
         }
         return [$printQuery, $logQuery];
+    }
+
+    /**
+     * @param \Magento\Catalog\Model\ResourceModel\Product\Collection $subject
+     * @param \Closure $proceed
+     * @param $attribute
+     * @param string $dir
+     * @return \Magento\Catalog\Model\ResourceModel\Product\Collection|mixed
+     * @throws \Exception
+     */
+    public function aroundAddAttributeToSort(
+        \Magento\Catalog\Model\ResourceModel\Product\Collection $subject,
+        \Closure $proceed,
+        $attribute,
+        $dir = 'ASC'
+    ) {
+        if (($ids = $this->_getIds()) &&
+            !($subject instanceof \Smile\ElasticsuiteCatalog\Model\ResourceModel\Product\Fulltext\Collection)) {
+            if ($attribute == 'position') {
+                $subject->getSelect()->order(new \Zend_Db_Expr(
+                        "FIELD(e.entity_id, " . implode(',', $ids) . ")")
+                );
+                return $subject;
+            }
+        }
+        return $proceed($attribute, $dir);
+    }
+
+    /**
+     * @return array|bool
+     * @throws \Exception
+     */
+    private function _getIds()
+    {
+        $ids = false;
+        if (
+            (
+                $this->_registry->registry('current_category') ||
+                $this->_registry->registry('advanced_search_conditions')
+            ) &&
+            $similar = $this->_request->getParam('similar')
+        ) {
+            $ids = $this->_helper->getUpSells($similar);
+        }
+        return $ids;
     }
 }

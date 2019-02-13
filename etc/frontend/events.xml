@@ -3,15 +3,4 @@
     <event name="view_block_abstract_to_html_after">
         <observer name="morozov_similarity_view_block_abstract_to_html_after" instance="Morozov\Similarity\Observer\Block\ToHtmlAfter" />
     </event>
-    <!--
-    <event name="view_block_abstract_to_html_before">
-        <observer name="morozov_similarity_view_block_abstract_to_html_before" instance="Morozov\Similarity\Observer\Block\ToHtmlBefore" />
-    </event>
-    <event name="eav_collection_abstract_load_before">
-        <observer name="morozov_similarity_eav_collection_abstract_load_before" instance="Morozov\Similarity\Observer\Collection\LoadBefore" />
-    </event>
-    -->
-    <event name="catalog_product_collection_apply_limitations_after">
-        <observer name="morozov_similarity_catalog_product_collection_apply_limitations_after" instance="Morozov\Similarity\Observer\Collection\ApplyLimitationsAfter" />
-    </event>
 </config>

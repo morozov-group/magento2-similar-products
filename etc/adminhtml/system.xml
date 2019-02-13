@@ -51,7 +51,6 @@
                 <field id="upsell_max_count" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Default Maximum Products to Display</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Comment.</comment>
                 </field>
             </group>
         </section>

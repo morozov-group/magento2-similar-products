@@ -5,7 +5,7 @@
 			<general>
 				<active>0</active>
 				<email>mp@bk.ru</email>
-				<url>http://35.230.187.53/</url>
+				<url></url>
 				<key>MPTESTKEY</key>
 				<timeout>500</timeout>
 				<cron_enabled>1</cron_enabled>
