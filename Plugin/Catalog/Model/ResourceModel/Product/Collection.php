@@ -85,6 +85,7 @@ class Collection
                         "FIELD(e.entity_id, " . implode(',', $ids) . ")");
                 };
             }
+            $subject->getSelect()->setPart(\Zend_Db_Select::ORDER, $orders);
         }
         return $proceed($printQuery, $logQuery, $sql);
     }
