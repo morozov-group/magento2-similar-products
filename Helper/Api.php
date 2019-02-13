@@ -63,9 +63,9 @@ class Api extends \Magento\Framework\App\Helper\AbstractHelper
         $items = \Zend_Json::decode($response);  // error
         $tempArr = [];
         foreach ($items as $item) {
-            //if ($item[1] > 0.0000001) {
+            if ($item[1] > 0.0000001) {
                 $tempArr[$item[0][0]['entity_id']] = $item[0][0]['image'] . $item[1];
-            //}
+            }
         }
         //$ids = array_keys(array_unique($tempArr));
         $ids = array_keys($tempArr);

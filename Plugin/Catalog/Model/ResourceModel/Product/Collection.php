@@ -52,7 +52,8 @@ class Collection
         $printQuery = false,
         $logQuery = false
     ) {
-        if ($ids = $this->_getIds()) {
+        $ids = $this->_getIds();
+        if ($ids) {
             $subject->addFieldToFilter('entity_id', ['in' => $ids]);
 
         }
@@ -62,27 +63,30 @@ class Collection
     /**
      * @param \Magento\Catalog\Model\ResourceModel\Product\Collection $subject
      * @param \Closure $proceed
-     * @param $attribute
-     * @param string $dir
-     * @return \Magento\Catalog\Model\ResourceModel\Product\Collection|mixed
-     * @throws \Exception
+     * @param bool $printQuery
+     * @param bool $logQuery
+     * @param null $sql
+     * @return mixed
+     * @throws \Zend_Db_Select_Exception
      */
-    public function aroundAddAttributeToSort(
+    public function aroundPrintLogQuery(
         \Magento\Catalog\Model\ResourceModel\Product\Collection $subject,
         \Closure $proceed,
-        $attribute,
-        $dir = 'ASC'
+        $printQuery = false,
+        $logQuery = false,
+        $sql = null
     ) {
-        if (($ids = $this->_getIds()) &&
-            !($subject instanceof \Smile\ElasticsuiteCatalog\Model\ResourceModel\Product\Fulltext\Collection)) {
-            if ($attribute == 'position') {
-                $subject->getSelect()->order(new \Zend_Db_Expr(
-                        "FIELD(e.entity_id, " . implode(',', $ids) . ")")
-                );
-                return $subject;
+        $ids = $this->_getIds();
+        if ($ids) {
+            $orders = $subject->getSelect()->getPart(\Zend_Db_Select::ORDER);
+            foreach ($orders as $k => &$order) {
+                if(strpos($order, 'cat_index.position') !== false) {
+                    $order = new \Zend_Db_Expr(
+                        "FIELD(e.entity_id, " . implode(',', $ids) . ")");
+                };
             }
         }
-        return $proceed($attribute, $dir);
+        return $proceed($printQuery, $logQuery, $sql);
     }
 
     /**
@@ -92,12 +96,12 @@ class Collection
     private function _getIds()
     {
         $ids = false;
+        $similar = $this->_request->getParam('similar');
         if (
             (
                 $this->_registry->registry('current_category') ||
                 $this->_registry->registry('advanced_search_conditions')
-            ) &&
-            $similar = $this->_request->getParam('similar')
+            ) && $similar
         ) {
             $ids = $this->_helper->getUpSells($similar);
         }
