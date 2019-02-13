@@ -189,7 +189,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function getProductsFileUrl()
     {
-        $mediaUrl = $this->storeManager->getStore()->getBaseUrl() . "media" . "/";
+        $mediaUrl = $this->storeManager->getStore()->getBaseUrl() . "media/";
         $url = $mediaUrl . self::EXPORT_DIR . '/' . $this->getProductsFileName();
         return $url;
     }

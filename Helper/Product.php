@@ -52,7 +52,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $csvDir = $this->similarityHelper->getExportDir();
         $pubMediaDir = $this->directoryList->getPath(\Magento\Framework\App\Filesystem\DirectoryList::MEDIA);
-        $mediaUrl = $this->storeManager->getStore()->getBaseUrl() . 'media';
+        $mediaUrl = $this->storeManager->getStore()->getBaseUrl() . 'media/';
 
         if (!is_dir($csvDir)) {
             if (!mkdir($csvDir)) {
