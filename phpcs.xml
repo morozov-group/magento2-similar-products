@@ -2,7 +2,6 @@
 <ruleset name="Magento Style">
     <description>Code Sniffer Configuration</description>
     <file>./Console</file>
-    <file>./Controller</file>
     <file>./Cron</file>
     <file>./Helper</file>
     <file>./Model</file>
