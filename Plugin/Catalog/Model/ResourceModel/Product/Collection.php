@@ -52,10 +52,16 @@ class Collection
         $printQuery = false,
         $logQuery = false
     ) {
-        $ids = $this->_getIds();
-        if ($ids) {
-            $subject->addFieldToFilter('entity_id', ['in' => $ids]);
-
+        if (!$subject->isLoaded()) {
+            $ids = $this->_getIds();
+            if ($ids !== null) {
+                if ($subject instanceof \Smile\ElasticsuiteCatalog\Model\ResourceModel\Product\Fulltext\Collection) {
+                    $subject->addFieldToFilter('entity_id', ['in' => $ids]);
+                }
+                elseif ($subject instanceof \Magento\Catalog\Model\ResourceModel\Product\Collection) {
+                    $subject->getSelect()->where('e.entity_id in (' . implode(',', $ids) . ')');
+                }
+            }
         }
         return [$printQuery, $logQuery];
     }
@@ -77,10 +83,10 @@ class Collection
         $sql = null
     ) {
         $ids = $this->_getIds();
-        if ($ids) {
+        if ($ids !== null) {
             $orders = $subject->getSelect()->getPart(\Zend_Db_Select::ORDER);
             foreach ($orders as $k => &$order) {
-                if(strpos($order, 'cat_index.position') !== false) {
+                if ($order[0] == 'cat_index.position') {
                     $order = new \Zend_Db_Expr(
                         "FIELD(e.entity_id, " . implode(',', $ids) . ")");
                 };
@@ -96,7 +102,7 @@ class Collection
      */
     private function _getIds()
     {
-        $ids = false;
+        $ids = null;
         $similar = $this->_request->getParam('similar');
         if (
             (

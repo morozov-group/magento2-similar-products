@@ -55,7 +55,7 @@ class Client
             && $similar = $this->_request->getParam('similar')
         ) {
             $ids = $this->_helper->getUpSells($similar);
-            if ($ids) {
+            if ($ids !== null) {
                 if (isset($params['body']['sort'])) {
                     foreach ($params['body']['sort'] as $k => $v) {
                         if (isset($v['category.position'])) {
