@@ -12,7 +12,7 @@ Magento 2 Similarity extension which provides connectivity with [Similarity Engi
 ## Installation
 Simple installation via composer.
 ```
-compose install morozov-group/magento2-similar-products
+compose require morozov-group/magento2-similar-products
 ```
 Go to configuration enter your email, and we'll take care of everything else.
 
