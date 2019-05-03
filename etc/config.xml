@@ -4,9 +4,7 @@
 		<morozov_similarity>
 			<general>
 				<active>0</active>
-				<email>mp@bk.ru</email>
 				<url></url>
-				<key>MPTESTKEY</key>
 				<timeout>500</timeout>
 				<cron_enabled>1</cron_enabled>
                 <image_check_enabled>1</image_check_enabled>

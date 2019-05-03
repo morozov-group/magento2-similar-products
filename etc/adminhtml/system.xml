@@ -18,7 +18,7 @@
                 <field id="email" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Contact Email</label>
                     <validate>required-entry</validate>
-                    <comment>Comment.</comment>
+                    <comment>Email for emergency cases.</comment>
                 </field>
                 <field id="url" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Service URL</label>
