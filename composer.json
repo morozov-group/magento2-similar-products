@@ -21,7 +21,7 @@
     },
 
     "require-dev": {
-        "magento/marketplace-eqp": "dev-master",
+        "magento/marketplace-eqp": "2.0.1",
         "magento/framework": "*"
     },
     "scripts": {
