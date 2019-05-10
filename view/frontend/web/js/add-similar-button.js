@@ -16,6 +16,7 @@ define([
                 elem.title = $.mage.__('Find Similar');
                 let urlParams = new URLSearchParams(window.location.search);
                 urlParams.set('similar', id);
+                urlParams.delete('p');
                 let query = '?' + urlParams.toString();
                 elem.href = window.location.origin + window.location.pathname + query;
                 container.append(elem);
