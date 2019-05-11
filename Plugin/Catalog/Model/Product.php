@@ -26,7 +26,7 @@ class Product
     {
         if ($this->defaultHelper->canUse()) {
             try {
-                if ($ids = $this->apiHelper->getUpSells($product->getEntityId())) {
+                if ($ids = $this->apiHelper->getUpSells($product->getEntityId(), false)) {
                     $productCollection = $this->collectionFactory->create();
                     $productCollection
                         ->addAttributeToFilter('entity_id', ['in' => $ids])

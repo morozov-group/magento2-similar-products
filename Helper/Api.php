@@ -1,13 +1,14 @@
 <?php
+
 namespace Morozov\Similarity\Helper;
 
 class Api extends \Magento\Framework\App\Helper\AbstractHelper
 {
-    const MASTER_URL       = 'https://master.similarity.morozov.group/';
-    const PATH_REGIONS     = 'api/regions';
+    const MASTER_URL = 'https://master.similarity.morozov.group/';
+    const PATH_REGIONS = 'api/regions';
 
     const PATH_GET_UPSELLS = 'api/view/%s';
-    const PATH_REINDEX     = 'api/reindex';
+    const PATH_REINDEX = 'api/reindex';
 
     /**
      * @var \Magento\Framework\App\ResourceConnection
@@ -29,7 +30,8 @@ class Api extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Framework\App\ResourceConnection $resourceConnection,
         \Morozov\Similarity\Helper\Data $similarityHelper,
         \Morozov\Similarity\Helper\Product $productHelper
-    ) {
+    )
+    {
         $this->resourceConnection = $resourceConnection;
         $this->similarityHelper = $similarityHelper;
         $this->productHelper = $productHelper;
@@ -41,7 +43,7 @@ class Api extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Service ==> Magento
      */
-    public function getUpSells($productId)
+    public function getUpSells($productId, $showTarget = true)
     {
         $url = $this->similarityHelper->getUrl() . sprintf(self::PATH_GET_UPSELLS, $productId);
         $ctxParams = [];
@@ -63,7 +65,7 @@ class Api extends \Magento\Framework\App\Helper\AbstractHelper
         $items = \Zend_Json::decode($response);  // error
         $tempArr = [];
         foreach ($items as $item) {
-            if ($item[1] > 0.0000001) {
+            if ( $item[1] > 0.0000001 || $showTarget) {
                 $tempArr[$item[0][0]['entity_id']] = $item[0][0]['image'] . $item[1];
             }
         }
