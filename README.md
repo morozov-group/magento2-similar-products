@@ -3,11 +3,13 @@
 
 Magento 2 Similarity extension which provides connectivity with [Similarity Engine](https://similarity.ai).
 
-1. Automated Upsells for every product
-2. Visualy Similar products for specified product /catalogsearch/advanced/result/?similar=PRODUCT_ID
-3. Visualy Similar products within same category category.html?similar=PRODUCT_ID
+[Demo store](http://magento.demo.similarity.ai)
+1. Automated Upsells for every product [Demo](http://magento.demo.similarity.ai/radiant-tee.html) [Production case](https://www.amiclubwear.com/shoes-boots-lmi-142-5blackflower.html)
+2. Visually Similar products for specified product /catalogsearch/advanced/result/?similar=PRODUCT_ID 
+3. Visually Similar products within same category category.html?similar=PRODUCT_ID [Demo](http://magento.demo.similarity.ai/women/tops-women/jackets-women.html?similar=1386)
 4. CMS Widget to put similar products any where for specified PRODUCT_ID.
 5. (Near future) Category filling assistant, for some special events or campaigns.
+
 
 ## Installation
 Simple installation via composer.
