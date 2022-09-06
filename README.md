@@ -1,3 +1,9 @@
+# Deprecation Notice
+Project was shut down and domain was taken over by other company.
+
+similarity.ai used to be owned by morozov.group.
+
+
 # magento2-similar-products
 [![CircleCI](https://circleci.com/gh/morozov-group/magento2-similar-products/tree/master.svg?style=svg&circle-token=ca2a3f01cf12a4cbf80fea0d34c7a9897fb39963)](https://circleci.com/gh/morozov-group/magento2-similar-products/tree/master)
 
